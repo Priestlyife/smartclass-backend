@@ -1,16 +1,31 @@
 {
-  "name": "backend",
+  "name": "smartclass-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend for SmartClass App",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "author": "",
+  "author": "Priestly Akinmulero",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mongodb": "^6.20.0"
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Priestlyife/smartclass-backend.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Priestlyife/smartclass-backend/issues"
+  },
+  "homepage": "https://github.com/Priestlyife/smartclass-backend#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
