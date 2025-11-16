@@ -1,15 +1,26 @@
-// backend/routes/orderRoutes.js
 const express = require("express");
 const router = express.Router();
-const orderController = require("../controllers/orderController");
+const Order = require("../models/orderModel");
 
-// Create order
-router.post("/", orderController.createOrder);
+// CREATE ORDER (POST)
+router.post("/", async (req, res) => {
+  try {
+    const order = new Order(req.body);
+    await order.save();
+    res.status(201).json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Get all orders (you can protect this with auth later)
-router.get("/", orderController.getOrders);
-
-// Get single order
-router.get("/:id", orderController.getOrderById);
+// GET ALL ORDERS
+router.get("/", async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;
