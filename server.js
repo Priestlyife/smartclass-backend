@@ -9,7 +9,11 @@ const orderRoutes = require('./routes/orderRoutes');   // ✅ MUST be here at th
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://127.0.0.1:5500", "http://localhost:5500"],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use(express.json());
 
 // Serve frontend files
