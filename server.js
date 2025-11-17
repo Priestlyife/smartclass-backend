@@ -10,10 +10,17 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ["http://127.0.0.1:5500", "http://localhost:5500"],
+  origin: [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "https://priestlyife.github.io",
+    "https://smartclass.mdx.priestly",   // your custom domain
+    "https://smartclass-frontend.priestlyife.vercel.app", // optional future
+  ],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
+
 app.use(express.json());
 
 // Serve frontend files
