@@ -2,7 +2,7 @@
 
 const express = require("express");
 const { ObjectId } = require("mongodb");
-const { getDB } = require("./db");
+const { getDB } = require("../db");  
 
 const router = express.Router();
 
