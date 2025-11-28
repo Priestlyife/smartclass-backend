@@ -5,8 +5,6 @@ const fs = require("fs");
 require("dotenv").config();
 
 const { connectDB } = require("./db");
-const courseRoutes = require("./courseRoutes");
-const orderRoutes = require("./orderRoutes");
 
 const app = express();
 
@@ -37,21 +35,20 @@ app.use(cors({
 app.use(express.json());
 
 /* ---------------------------
-   STATIC IMAGE MIDDLEWARE
+   STATIC IMAGE MIDDLEWARE (OPTIONAL)
 ---------------------------- */
-app.use("/images", (req, res) => {
-  const filePath = path.join(__dirname, "public", "images", req.path);
-
-  if (fs.existsSync(filePath)) {
-    return res.sendFile(filePath);
-  }
-
-  return res.status(404).json({ error: "Image not found" });
-});
+// app.use("/images", (req, res) => {
+//   const filePath = path.join(__dirname, "public", "images", req.path);
+//   if (fs.existsSync(filePath)) return res.sendFile(filePath);
+//   return res.status(404).json({ error: "Image not found" });
+// });
 
 /* ---------------------------
    API ROUTES
 ---------------------------- */
+const courseRoutes = require("./routes/courseRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+
 app.use("/", courseRoutes);
 app.use("/", orderRoutes);
 
@@ -63,7 +60,7 @@ app.get("/", (req, res) => {
 });
 
 /* ---------------------------
-   START SERVER AFTER DB CONNECTS
+   START SERVER
 ---------------------------- */
 const PORT = process.env.PORT || 5000;
 
