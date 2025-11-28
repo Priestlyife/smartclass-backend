@@ -5,8 +5,8 @@ const fs = require("fs");
 require("dotenv").config();
 
 const { connectDB } = require("./db");
-const courseRoutes = require("./courseRoutes");   // <- correct location
-const orderRoutes = require("./orderRoutes");     // <- correct location
+const courseRoutes = require("./routes/courseRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -26,7 +26,9 @@ app.use(cors({
   origin: [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "https://priestlyife.github.io"
+    "https://priestlyife.github.io",
+    "https://smartclass.mdx.priestly",
+    "https://smartclass-frontend.priestlyife.vercel.app"
   ],
   methods: ["GET", "POST", "PUT"],
   allowedHeaders: ["Content-Type"]
@@ -48,11 +50,10 @@ app.use("/images", (req, res) => {
 });
 
 /* ---------------------------
-   API ROUTES
+   ROUTES
 ---------------------------- */
-const courseRoutes = require("./routes/courseRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-
+app.use("/", courseRoutes);
+app.use("/", orderRoutes);
 
 /* ---------------------------
    DEFAULT ROUTE
@@ -61,9 +62,6 @@ app.get("/", (req, res) => {
   res.send("SmartClass Backend API is running...");
 });
 
-/* ---------------------------
-   START SERVER AFTER DB CONNECTS
----------------------------- */
 const PORT = process.env.PORT || 5000;
 
 connectDB()
