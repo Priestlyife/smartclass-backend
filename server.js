@@ -50,8 +50,9 @@ app.use("/images", (req, res) => {
 /* ---------------------------
    API ROUTES
 ---------------------------- */
-app.use("/", courseRoutes);
-app.use("/", orderRoutes);
+const courseRoutes = require("./routes/courseRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+
 
 /* ---------------------------
    DEFAULT ROUTE
