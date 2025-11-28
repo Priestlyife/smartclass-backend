@@ -1,69 +1,66 @@
-const express = require('express');
+// courseRoutes.js – LESSON ROUTES with native MongoDB
+
+const express = require("express");
+const { ObjectId } = require("mongodb");
+const { getDB } = require("./db");
+
 const router = express.Router();
-const Course = require('../models/course');
 
-// GET all courses
-router.get('/', async (req, res) => {
+/**
+ * GET /lessons
+ * Coursework requirement: returns all lessons
+ */
+router.get("/lessons", async (req, res) => {
   try {
-    const courses = await Course.find();
-    res.json(courses);
+    const db = getDB();
+    const lessons = await db.collection("lessons").find({}).toArray();
+    res.json(lessons);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error fetching lessons:", err);
+    res.status(500).json({ error: "Failed to fetch lessons" });
   }
 });
 
-// GET one course by ID
-router.get('/:id', async (req, res) => {
+/**
+ * OPTIONAL: Keep your old GET /api/courses for your frontend
+ * so nothing breaks – it just calls the same logic.
+ */
+router.get("/api/courses", async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
-    if (!course) return res.status(404).json({ message: "Course not found" });
-    res.json(course);
+    const db = getDB();
+    const lessons = await db.collection("lessons").find({}).toArray();
+    res.json(lessons);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error fetching courses:", err);
+    res.status(500).json({ error: "Failed to fetch courses" });
   }
 });
 
-// POST add new course
-router.post('/', async (req, res) => {
+/**
+ * PUT /lesson/:id
+ * Coursework requirement: update any field (esp. spaces/availability)
+ */
+router.put("/lesson/:id", async (req, res) => {
   try {
-    const newCourse = new Course(req.body);
-    const saved = await newCourse.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
+    const db = getDB();
+    const id = req.params.id;
 
-// PUT update course
-router.put('/:id', async (req, res) => {
-  try {
-    const updated = await Course.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
+    const updateFields = req.body; // e.g. { space: 7 } or { available: 7 }
+
+    const result = await db.collection("lessons").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateFields }
     );
 
-    if (!updated) return res.status(404).json({ message: "Course not found" });
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: "Lesson not found" });
+    }
 
-    res.json(updated);
+    res.json({ message: "Lesson updated successfully" });
   } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// DELETE a course
-router.delete('/:id', async (req, res) => {
-  try {
-    const deleted = await Course.findByIdAndDelete(req.params.id);
-
-    if (!deleted) return res.status(404).json({ message: "Course not found" });
-
-    res.json({ message: "Course deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error updating lesson:", err);
+    res.status(500).json({ error: "Failed to update lesson" });
   }
 });
 
 module.exports = router;
-
-

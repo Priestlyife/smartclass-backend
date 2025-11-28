@@ -1,8 +1,10 @@
-// seedCourses.js
+// seedCourses.js – Native MongoDB seeding
 
-const mongoose = require("mongoose");
-const Course = require("./models/course");
 require("dotenv").config();
+const { MongoClient } = require("mongodb");
+
+const uri = process.env.MONGO_URI;
+const client = new MongoClient(uri);
 
 const courses = [
   {
@@ -271,13 +273,24 @@ const courses = [
 ];
 
 // --- Database Connection ---
-mongoose.connect(process.env.MONGO_URI)
-  .then(async () => {
-    console.log('✅ Connected to MongoDB');
-    await Course.deleteMany({});
-    console.log('🗑️  Cleared existing data');
-    await Course.insertMany(courses);
-    console.log('🌱 Seeded courses successfully');
-    process.exit();
-  })
-  .catch(err => console.error('❌ Error seeding data:', err));
+async function seed() {
+  try {
+    await client.connect();
+    const db = client.db("smartclass"); // change if needed
+    const lessonsCol = db.collection("lessons");
+
+    console.log("🗑️ Clearing old lessons...");
+    await lessonsCol.deleteMany({});
+
+    console.log("🌱 Inserting new lessons...");
+    await lessonsCol.insertMany(courses);
+
+    console.log("✅ Seeding complete!");
+  } catch (err) {
+    console.error("❌ Seeding error:", err);
+  } finally {
+    await client.close();
+  }
+}
+
+seed();
