@@ -5,6 +5,8 @@ const fs = require("fs");
 require("dotenv").config();
 
 const { connectDB } = require("./db");
+const courseRoutes = require("./courseRoutes");   // <- correct location
+const orderRoutes = require("./orderRoutes");     // <- correct location
 
 const app = express();
 
@@ -24,9 +26,7 @@ app.use(cors({
   origin: [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
-    "https://priestlyife.github.io",
-    "https://smartclass.mdx.priestly",
-    "https://smartclass-frontend.priestlyife.vercel.app"
+    "https://priestlyife.github.io"
   ],
   methods: ["GET", "POST", "PUT"],
   allowedHeaders: ["Content-Type"]
@@ -35,20 +35,21 @@ app.use(cors({
 app.use(express.json());
 
 /* ---------------------------
-   STATIC IMAGE MIDDLEWARE (OPTIONAL)
+   STATIC IMAGE MIDDLEWARE
 ---------------------------- */
-// app.use("/images", (req, res) => {
-//   const filePath = path.join(__dirname, "public", "images", req.path);
-//   if (fs.existsSync(filePath)) return res.sendFile(filePath);
-//   return res.status(404).json({ error: "Image not found" });
-// });
+app.use("/images", (req, res) => {
+  const filePath = path.join(__dirname, "public", "images", req.path);
+
+  if (fs.existsSync(filePath)) {
+    return res.sendFile(filePath);
+  }
+
+  return res.status(404).json({ error: "Image not found" });
+});
 
 /* ---------------------------
    API ROUTES
 ---------------------------- */
-const courseRoutes = require("./routes/courseRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-
 app.use("/", courseRoutes);
 app.use("/", orderRoutes);
 
@@ -60,7 +61,7 @@ app.get("/", (req, res) => {
 });
 
 /* ---------------------------
-   START SERVER
+   START SERVER AFTER DB CONNECTS
 ---------------------------- */
 const PORT = process.env.PORT || 5000;
 
