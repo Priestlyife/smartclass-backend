@@ -10,18 +10,18 @@ const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
-/* ---------------------------
+/* 
    LOGGER MIDDLEWARE
----------------------------- */
+*/
 app.use((req, res, next) => {
   const time = new Date().toISOString();
   console.log(`[${time}] ${req.method} ${req.url}`);
   next();
 });
 
-/* ---------------------------
+/*
    CORS
----------------------------- */
+ */
 app.use(cors({
   origin: [
     "http://127.0.0.1:5500",
@@ -36,9 +36,9 @@ app.use(cors({
 
 app.use(express.json());
 
-/* ---------------------------
+/*
    STATIC IMAGE MIDDLEWARE
----------------------------- */
+ */
 app.use("/images", (req, res) => {
   const filePath = path.join(__dirname, "public", "images", req.path);
 
@@ -49,15 +49,15 @@ app.use("/images", (req, res) => {
   return res.status(404).json({ error: "Image not found" });
 });
 
-/* ---------------------------
+/*
    ROUTES
----------------------------- */
+ */
 app.use("/", courseRoutes);
 app.use("/", orderRoutes);
 
-/* ---------------------------
+/*
    DEFAULT ROUTE
----------------------------- */
+*/
 app.get("/", (req, res) => {
   res.send("SmartClass Backend API is running...");
 });

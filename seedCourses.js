@@ -140,7 +140,7 @@ const courses = [
     details: ["OOP", "Data Structures", "Java Apps"],
   },
 
-  /* ---------- Continue remaining 10 courses ---------- */
+  
 
   {
     id: 11,
@@ -278,7 +278,7 @@ const courses = [
 async function seed() {
   try {
     await client.connect();
-    const db = client.db("smartclass"); // change if needed
+    const db = client.db("smartclass"); 
     const lessonsCol = db.collection("lessons");
 
     console.log("🗑️ Clearing old lessons...");

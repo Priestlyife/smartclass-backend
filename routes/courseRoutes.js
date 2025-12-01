@@ -7,9 +7,8 @@ const { getDB } = require("../db");
 
 const router = express.Router();
 
-/**
- * GET /lessons
- * Coursework requirement: returns all lessons
+
+ /* GET /lessons
  */
 router.get("/lessons", async (req, res) => {
   try {
@@ -23,7 +22,7 @@ router.get("/lessons", async (req, res) => {
 });
 
 /**
- * OPTIONAL: Keep your old GET /api/courses for your frontend
+
  * so nothing breaks – it just calls the same logic.
  */
 router.get("/api/courses", async (req, res) => {
@@ -39,7 +38,6 @@ router.get("/api/courses", async (req, res) => {
 
 /**
  * PUT /lesson/:id
- * Coursework requirement: update any field (esp. spaces/availability)
  */
 router.put("/lesson/:id", async (req, res) => {
   try {

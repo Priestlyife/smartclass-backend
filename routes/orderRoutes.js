@@ -8,7 +8,7 @@ const router = express.Router();
 
 /**
  * POST /order
- * Coursework requirement: save new order
+ 
  */
 router.post("/order", async (req, res) => {
   try {
@@ -28,7 +28,7 @@ router.post("/order", async (req, res) => {
 });
 
 /**
- * OPTIONAL: Keep your old POST /api/orders so frontend still works
+ POST /api/orders 
  */
 router.post("/api/orders", async (req, res) => {
   try {
